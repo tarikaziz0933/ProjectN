@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +18,16 @@ use App\Http\Controllers\FrontendController;
 */
 
 Auth::routes();
-
-
 Route::get('/', [FrontendController::class, 'welcome']);
-Route::get('/users', [HomeController::class, 'users'])->name('users');
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+//Users
+Route::get('/users', [HomeController::class, 'users'])->name('users');
+Route::get('/delete/user/{user_id}', [HomeController::class, 'delete'])->name('delete.user');
+
+//Category
+Route::get('/category', [CategoryController::class, 'index'])->name('category');
+Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+Route::get('/edit/category/{category_id}', [CategoryController::class, 'edit'])->name('edit.category');
+Route::post('/update/category', [CategoryController::class, 'update'])->name('category.update');
+Route::get('/delete/category/{category_id}', [CategoryController::class, 'delete'])->name('delete.category');

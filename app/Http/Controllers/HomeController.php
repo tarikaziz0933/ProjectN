@@ -34,4 +34,9 @@ class HomeController extends Controller
         $total_user = USER::count();
         return view('admin.users.index', compact('all_users', 'total_user'));
     }
+    function delete($user_id)
+    {
+        User::find($user_id)->delete();
+        return back();
+    }
 }
