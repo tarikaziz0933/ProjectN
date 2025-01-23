@@ -31,3 +31,6 @@ Route::post('/category/store', [CategoryController::class, 'store'])->name('cate
 Route::get('/edit/category/{category_id}', [CategoryController::class, 'edit'])->name('edit.category');
 Route::post('/update/category', [CategoryController::class, 'update'])->name('category.update');
 Route::get('/delete/category/{category_id}', [CategoryController::class, 'delete'])->name('delete.category');
+Route::post('/delete/mark/delete', [CategoryController::class, 'mark_delete'])->name('category.marked');
+Route::get('/restore/category/{category_id}', [CategoryController::class, 'restore'])->name('restore.category');
+Route::get('/permament/delete/category/{category_id}', [CategoryController::class, 'perDelete'])->name('permanent.delete.category');
