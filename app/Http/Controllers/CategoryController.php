@@ -43,7 +43,7 @@ class CategoryController extends Controller
             $extension = $category_image->getClientOriginalExtension();
             $file_name = $category_id . '.' . $extension;
 
-            Image::make($category_image)->save(public_path('/uploads/category/' . $file_name));
+            Image::make($category_image)->resize(300, 250)->save(public_path('/uploads/category/' . $file_name));
 
             Category::find($category_id)->update([
                 'category_image' => $file_name,
@@ -74,12 +74,48 @@ class CategoryController extends Controller
     }
     function update(Request $request)
     {
-        Category::find($request->category_id)->update([
-            'category_name' => $request->category_name,
-            'added_by' => Auth::id(),
-            'updated_at' => Carbon::now(),
-        ]);
-        return redirect('/category')->with('success', 'Category updated sucessfully');
+        if ($request->category_image == '') {
+            Category::find($request->category_id)->update([
+                'category_name' => $request->category_name,
+                'added_by' => Auth::id(),
+                'updated_at' => Carbon::now(),
+            ]);
+            return redirect('/category')->with('success', 'Category updated sucessfully');
+        } else {
+            $image = Category::find($request->category_id);
+            if ($image->category_image == 'default.jpg') {
+                $category_img = $request->category_image;
+                $extension = $category_img->getClientOriginalExtension();
+                $file_name = $request->category_id . '.' . $extension;
+
+                Image::make($category_img)->save(public_path('/uploads/category/' . $file_name));
+
+                Category::find($request->category_id)->update([
+                    'category_image' => $file_name,
+                ]);
+                return redirect('/category')->with('success', 'Category updated sucessfully');
+            } else {
+                $delete_from = public_path('/uploads/category/' . $image->category_image);
+                unlink($delete_from);
+
+                $category_img = $request->category_image;
+                $extension = $category_img->getClientOriginalExtension();
+                $file_name = $request->category_id . '.' . $extension;
+
+                Image::make($category_img)->save(public_path('/uploads/category/' . $file_name));
+
+                Category::find($request->category_id)->update([
+                    'category_image' => $file_name,
+                ]);
+                return redirect('/category')->with('success', 'Category updated sucessfully');
+            }
+        }
+        // Category::find($request->category_id)->update([
+        //     'category_name' => $request->category_name,
+        //     'added_by' => Auth::id(),
+        //     'updated_at' => Carbon::now(),
+        // ]);
+        // return redirect('/category')->with('success', 'Category updated sucessfully');
     }
     function delete($category_id)
     {
@@ -108,7 +144,15 @@ class CategoryController extends Controller
     function perDelete($category_id)
     {
         // echo $category_id;
-        Category::onlyTrashed()->find($category_id)->forceDelete();
-        return back();
+        $image = Category::onlyTrashed()->find($category_id);
+        if ($image->category_image == 'default.jpg') {
+            Category::onlyTrashed()->find($category_id)->forceDelete();
+            return back();
+        } else {
+            $delete_from = public_path('/uploads/category/' . $image->category_image);
+            unlink($delete_from);
+            Category::onlyTrashed()->find($category_id)->forceDelete();
+            return back();
+        }
     }
 }

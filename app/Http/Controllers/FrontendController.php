@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
-    public function welcome(){
+    public function welcome()
+    {
         return view('welcome');
     }
 }

@@ -1,12 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 m-auto">
+            <div class="col-lg-10 m-auto">
                 <div class="card">
-                    <div class="card-header">
-                        <h3>User List <span class="float-end">Total User: ({{ $total_user }})</span></h3>
+                    <div class="card-header d-flex">
+                        <h3>User List</h3>
+                            <h3><span class="float-end">Total User: ({{ $total_user }})</span></h3>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered">
@@ -19,12 +20,19 @@
                             </tr>
                             @foreach ($all_users as $key => $user)
                                 <tr>
-                                    <td>{{ $all_users->firstitem() + $key }}</td>
+                                    <td>{{ $all_users->firstitem() + $key }}</td>   {{-- for pagination --}}
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('delete.user', $user->id) }}" class="btn btn-danger">Delete</a>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="5" cy="12" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="19" cy="12" r="2"/></g></svg>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="{{ route('delete.user', $user->id) }}">Delete</a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

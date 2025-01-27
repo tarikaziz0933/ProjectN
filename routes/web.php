@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubcategoryController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -34,3 +35,8 @@ Route::get('/delete/category/{category_id}', [CategoryController::class, 'delete
 Route::post('/delete/mark/delete', [CategoryController::class, 'mark_delete'])->name('category.marked');
 Route::get('/restore/category/{category_id}', [CategoryController::class, 'restore'])->name('restore.category');
 Route::get('/permament/delete/category/{category_id}', [CategoryController::class, 'perDelete'])->name('permanent.delete.category');
+
+
+//Subcategory
+Route::get('/subcategory', [SubcategoryController::class, 'index'])->name('subcategory');
+Route::post('/subcategory/store', [SubcategoryController::class, 'subCategoryStore'])->name('subcategory.store');

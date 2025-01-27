@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-9">
                 <div class="card">
                     <div class="card-header">
                         <h3>Category List</h3>
@@ -27,12 +27,18 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $category->category_name }}</td>
                                     <td>{{ $category->rel_to_user->name }}</td>
-                                    <td><img width="100" src="{{ asset('/uploads/category') }}/{{ $category->category_image }}" alt=""></td>
+                                    <td><img width="100" src="{{ asset('uploads/category') }}/{{ $category->category_image }}" alt=""></td>
                                     <td>{{ $category->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a href="{{ route('edit.category', $category->id) }}" class="btn btn-success">Edit</a>
+                                        <div class="d-flex">
+                                            <a href="{{ route('edit.category', $category->id) }}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{ route('delete.category', $category->id) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                                        </div>
+
+
+                                        {{-- <a href="{{ route('edit.category', $category->id) }}" class="btn btn-success">Edit</a>
                                         <a href="{{ route('delete.category', $category->id) }}"
-                                            class="btn btn-danger">Delete</a>
+                                            class="btn btn-danger">Delete</a> --}}
                                     </td>
                                 </tr>
                             @empty
@@ -88,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="card">
                     <div class="card-header">
                         <h3>Add Category</h3>

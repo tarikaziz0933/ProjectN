@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('category') }}">Category</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('subcategory') }}">Sub Category</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
