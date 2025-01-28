@@ -27,7 +27,7 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $category->category_name }}</td>
                                     <td>{{ $category->rel_to_user->name }}</td>
-                                    <td><img width="100" src="{{ asset('uploads/category') }}/{{ $category->category_image }}" alt=""></td>
+                                    <td><img width="100" src="{{ asset('/uploads/category') }}/{{ $category->category_image }}" alt=""></td>
                                     <td>{{ $category->created_at->diffForHumans() }}</td>
                                     <td>
                                         <div class="d-flex">

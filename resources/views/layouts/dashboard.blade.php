@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Gymove - Fitness Bootstrap Admin Dashboard</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/backend/images/favicon.png') }}">
@@ -799,6 +800,14 @@
                             <li><a href="{{ route('subcategory') }}">Subcategory List</a></li>
                         </ul>
                     </li>
+                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-television"></i>
+							<span class="nav-text">Product</span>
+						</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('add.product') }}">Add Product</a></li>
+                        </ul>
+                    </li>
                 </ul>
 			</div>
         </div>
@@ -863,5 +872,6 @@
 			});
 		});
 	</script>
+    @yield('footer_script')
 </body>
 </html>
