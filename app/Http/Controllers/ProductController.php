@@ -75,8 +75,14 @@ class ProductController extends Controller
 
             $sl++;
         }
+        return back();
+    }
 
-
-        // return back();
+    function product_list()
+    {
+        $all_products = Product::all();
+        return view('admin.product.list', [
+            'all_products' => $all_products,
+        ]);
     }
 }

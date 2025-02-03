@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubcategoryController;
 use Illuminate\Support\Facades\Auth;
@@ -46,3 +47,10 @@ Route::post('/subcategory/store', [SubcategoryController::class, 'subCategorySto
 Route::get('/product', [ProductController::class, 'add_product'])->name('add.product');
 Route::post('/product/store', [ProductController::class, 'product_store'])->name('product.store');
 Route::post('/getsubcategory', [ProductController::class, 'getsubcategory']);
+Route::get('/product/list', [ProductController::class, 'product_list'])->name('product.list');
+
+//Inventory
+Route::get('/product/inventory/{product_id}', [InventoryController::class, 'inventory'])->name('inventory');
+Route::get('/product/variation', [InventoryController::class, 'variation'])->name('variation');
+Route::post('/add/color', [InventoryController::class, 'add_color'])->name('add.color');
+Route::post('/add/size', [InventoryController::class, 'add_size'])->name('add.size');

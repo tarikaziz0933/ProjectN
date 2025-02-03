@@ -3,97 +3,97 @@
 @section('content')
     <div class="">
         <div class="row">
-            <div class="col-lg-9">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Category List</h3>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ route('category.marked') }}" method="POST">
-                        @csrf
-                        <table class="table table-bordered">
-                            <tr>
-                                <th><input type="checkbox" id="checkAll"> Mark All</th>
-                                <th>SL</th>
-                                <th>Category Name</th>
-                                <th>Added By</th>
-                                <th>Image</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                            @forelse ($categories as $key => $category)
-                                <tr>
-                                    <td><input type="checkbox" name="mark[]" value="{{ $category->id }}"></td>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $category->category_name }}</td>
-                                    <td>{{ $category->rel_to_user->name }}</td>
-                                    <td><img width="100" src="{{ asset('/uploads/category') }}/{{ $category->category_image }}" alt=""></td>
-                                    <td>{{ $category->created_at->diffForHumans() }}</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="{{ route('edit.category', $category->id) }}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-                                            <a href="{{ route('delete.category', $category->id) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                <div class="col-lg-9 bg-skyblue">
+                        <div class="card h-auto">
+                            <div class="card-header">
+                                <h3>Category List</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('category.marked') }}" method="POST">
+                                @csrf
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th><input type="checkbox" id="checkAll"> Mark All</th>
+                                        <th>SL</th>
+                                        <th>Category Name</th>
+                                        <th>Added By</th>
+                                        <th>Image</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    @forelse ($categories as $key => $category)
+                                        <tr>
+                                            <td><input type="checkbox" name="mark[]" value="{{ $category->id }}"></td>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $category->category_name }}</td>
+                                            <td>{{ $category->rel_to_user->name }}</td>
+                                            <td><img width="100" src="{{ asset('/uploads/category') }}/{{ $category->category_image }}" alt=""></td>
+                                            <td>{{ $category->created_at->diffForHumans() }}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a href="{{ route('edit.category', $category->id) }}" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
+                                                    <a href="{{ route('delete.category', $category->id) }}" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                                                </div>
+
+
+                                                {{-- <a href="{{ route('edit.category', $category->id) }}" class="btn btn-success">Edit</a>
+                                                <a href="{{ route('delete.category', $category->id) }}"
+                                                    class="btn btn-danger">Delete</a> --}}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center">No Data Found</td>
+                                        </tr>
+                                    @endforelse
+                                    </table>
+                                    @error('mark')
+                                        <div>
+                                            <strong class="text-danger">{{ $message }}</strong>
                                         </div>
+                                    @enderror
 
+                                    @if(App\Models\Category::count() > 0)
+                                        <button type="submit" class="btn btn-danger">Delete Marked</button>
+                                    @endif
+                                </form>
+                            </div>
+                        </div>
 
-                                        {{-- <a href="{{ route('edit.category', $category->id) }}" class="btn btn-success">Edit</a>
-                                        <a href="{{ route('delete.category', $category->id) }}"
-                                            class="btn btn-danger">Delete</a> --}}
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center">No Data Found</td>
-                                </tr>
-                            @endforelse
-                            </table>
-                            @error('mark')
-                                <div>
-                                    <strong class="text-danger">{{ $message }}</strong>
+                        <div class="card mt-5 h-auto">
+                                <div class="card-header">
+                                    <h3>Trashed Category List</h3>
                                 </div>
-                            @enderror
-
-                            @if(App\Models\Category::count() > 0)
-                                <button type="submit" class="btn btn-danger">Delete Marked</button>
-                            @endif
-                    </form>
-                    </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Category Name</th>
+                                            <th>Added By</th>
+                                            <th>Created At</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        @forelse ($trash_categories as $key => $category)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $category->category_name }}</td>
+                                                <td>{{ $category->rel_to_user->name }}</td>
+                                                <td>{{ $category->created_at->diffForHumans() }}</td>
+                                                <td>
+                                                    <a href="{{ route('restore.category', $category->id) }}" class="btn btn-success">Restore</a>
+                                                    <a href="{{ route('permanent.delete.category', $category->id) }}"
+                                                        class="btn btn-danger">Delete</a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center">No Data Found</td>
+                                            </tr>
+                                        @endforelse
+                                    </table>
+                                </div>
+                        </div>
                 </div>
-
-                <div class="card mt-5">
-                    <div class="card-header">
-                        <h3>Trashed Category List</h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>SL</th>
-                                <th>Category Name</th>
-                                <th>Added By</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                            @forelse ($trash_categories as $key => $category)
-                                <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $category->category_name }}</td>
-                                    <td>{{ $category->rel_to_user->name }}</td>
-                                    <td>{{ $category->created_at->diffForHumans() }}</td>
-                                    <td>
-                                        <a href="{{ route('restore.category', $category->id) }}" class="btn btn-success">Restore</a>
-                                        <a href="{{ route('permanent.delete.category', $category->id) }}"
-                                            class="btn btn-danger">Delete</a>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="text-center">No Data Found</td>
-                                </tr>
-                            @endforelse
-                        </table>
-                    </div>
-                </div>
-            </div>
             <div class="col-lg-3">
                 <div class="card">
                     <div class="card-header">
