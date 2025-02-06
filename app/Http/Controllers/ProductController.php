@@ -47,13 +47,14 @@ class ProductController extends Controller
             'long_descrp' => $request->long_descrp,
             'sku' => substr($request->product_name, 0, 4) . '-' . Str::random(5) . rand(0, 1000),
             'slug' => str_replace(' ', '-', Str::lower($request->product_name)) . '-' . rand(0, 1000000),
+            'created_at' => Carbon::now(),
         ]);
         $preview_image = $request->preview;
         $extension = $preview_image->getClientOriginalExtension();
 
         $preview_name = $product_id . '.' . $extension;
 
-        Image::make($preview_image)->save(public_path('/uploads/product/preview/' . $preview_name));
+        Image::make($preview_image)->resize(680, 680)->save(public_path('/uploads/product/preview/' . $preview_name));
 
         Product::find($product_id)->update([
             'preview' => $preview_name,
@@ -65,7 +66,7 @@ class ProductController extends Controller
         foreach ($thumbnail_images as $thumbnails) {
             $extension = $thumbnails->getClientOriginalExtension();
             $thumbnail_name = $product_id . '-' . $sl . '.' . $extension;
-            Image::make($thumbnails)->save(public_path('/uploads/product/thumbnails/' . $thumbnail_name));
+            Image::make($thumbnails)->resize(680, 680)->save(public_path('/uploads/product/thumbnails/' . $thumbnail_name));
 
             Thumbnails::insert([
                 'product_id' => $product_id,
@@ -75,7 +76,7 @@ class ProductController extends Controller
 
             $sl++;
         }
-        return back();
+        return back()->with('success', 'Product added successfully');
     }
 
     function product_list()

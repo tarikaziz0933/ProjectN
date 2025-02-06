@@ -13,14 +13,14 @@
                         <tr>
                             <th>SL</th>
                             <th>Color Name</th>
-                            <th>Color Code</th>
+                            <th>Color</th>
                             <th>Action</th>
                         </tr>
                         @foreach ($colors as $key=>$color)
                             <tr>
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $color->color_name }}</td>
-                                <td>{{ $color->color_code }}</td>
+                                <td><span class="badge" style="background: {{ $color->color_code }}; color: transparent">colro</span></td>
                                 <td>
                                     <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
                                 </td>

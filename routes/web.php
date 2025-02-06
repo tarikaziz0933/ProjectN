@@ -19,9 +19,12 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//Frontend
 Auth::routes();
-Route::get('/', [FrontendController::class, 'welcome']);
+Route::get('/', [FrontendController::class, 'welcome'])->name('index');
+Route::get('/product/details/{slug}', [FrontendController::class, 'product_details'])->name('product.details');
+
+//Backend
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 //Users
@@ -54,3 +57,6 @@ Route::get('/product/inventory/{product_id}', [InventoryController::class, 'inve
 Route::get('/product/variation', [InventoryController::class, 'variation'])->name('variation');
 Route::post('/add/color', [InventoryController::class, 'add_color'])->name('add.color');
 Route::post('/add/size', [InventoryController::class, 'add_size'])->name('add.size');
+Route::post('/add/inventory', [InventoryController::class, 'add_inventory'])->name('add.inventory');
+
+Route::post('/getSize', [FrontendController::class, 'getSize']);

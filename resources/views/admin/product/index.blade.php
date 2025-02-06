@@ -6,9 +6,13 @@
         <div class="card-header">
             <h3>Add Product</h3>
         </div>
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
         <div class="card-body">
             <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
@@ -52,7 +56,7 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <textarea placeholder="Long Discription" name="long_descrp" class="form-control"></textarea>
+                            <textarea id="summernote" placeholder="Long Discription" name="long_descrp" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -80,6 +84,27 @@
 @endsection
 
 @section('footer_script')
+
+    @if (session('success'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "{{ session('success') }}"
+        });
+    </script>
+    @endif
+
     <script>
         $('#category_id').change(function(){
             var category_id = $(this).val();
@@ -100,4 +125,10 @@
             });
         });
     </script>
+    <script>
+        $(function(){
+            $('#summernote').summernote();
+        });
+    </script>
+
 @endsection

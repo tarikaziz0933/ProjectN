@@ -15,6 +15,7 @@
 	<link href="{{ asset('/backend/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/backend/css/style.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -867,6 +868,8 @@
 	<script src="{{ asset('/backendv/endor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('/backend/js/custom.min.js') }}"></script>
 	<script src="{{ asset('/backend/js/deznav-init.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
 	<script>
 		$(function () {
 			$('#datetimepicker1').datetimepicker({
