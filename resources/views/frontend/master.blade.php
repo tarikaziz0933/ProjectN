@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Stowaa -  Ecommerce HTML Template</title>
-    <link rel="shortcut icon" href="assets/images/logo/favourite_icon_1.png">
+    <link rel="shortcut icon" href="{{ asset('/frontend/images/logo/favourite_icon_1.png') }}">
 
     <!-- fraimwork - css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/bootstrap.min.css') }}">
@@ -33,9 +33,7 @@
 
     <!-- select option - css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/nice-select.css') }}">
-
-    <!-- woocommercen - css include -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/woocommerce.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/woocommerce-2.css') }}">
 
     <!-- custom - css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/style.css') }}">
@@ -134,7 +132,7 @@
                                     <li>
                                         <span class="cart_icon">
                                             <i class="icon icon-ShoppingCart"></i>
-                                            <small class="cart_counter">3</small>
+                                            <small class="cart_counter">{{ App\Models\Cart::where('customer_id', Auth::guard('customerlogin')->id())->count() }}</small>
                                         </span>
                                     </li>
                                </ul>
@@ -172,7 +170,7 @@
                                         <i class="fal fa-times"></i>
                                     </button>
                                     <ul class="main_menu_list ul_li">
-                                        <li><a class="nav-link" href="#">Home</a></li>
+                                        <li><a class="nav-link" href="{{ route('index') }}">Home</a></li>
                                         <li><a class="nav-link" href="#">About us</a></li>
                                         <li><a class="nav-link" href="#">Shop</a></li>
                                         <li><a class="nav-link" href="#">Contact Us</a></li>
@@ -184,9 +182,22 @@
 
                         <div class="col col-md-3">
                             <ul class="header_icons_group ul_li_right">
-                                 <li>
-                                    <a href="#">Jon Doe</a>
-                                </li>
+                                @auth('customerlogin')
+                                    <div class="dropdown">
+                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ Auth::guard('customerlogin')->user()->name }}
+                                        </a>
+
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <li><a class="dropdown-item" href="#">My Account</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('customer.logout') }}">Logout</a></li>
+                                        </ul>
+                                    </div>
+                                @else
+                                    <li>
+                                        <a href="{{ route('customer.register.login') }}">Register/Login</a>
+                                    </li>
+                                @endauth
 
                                 <li>
                                     <a href="account.html">
@@ -212,59 +223,42 @@
                 <div class="cart_sidebar">
                     <button type="button" class="close_btn"><i class="fal fa-times"></i></button>
                     <ul class="cart_items_list ul_li_block mb_30 clearfix">
+                        @php
+                            $sub_total = 0;
+                        @endphp
+                        @forelse (App\Models\Cart::where('customer_id', Auth::guard('customerlogin')->id())->get() as $cart)
+                            <li>
+                                <div class="item_image">
+                                    <img src="{{ asset('/uploads/product/preview') }}/{{ $cart->rel_to_product->preview }}" alt="image_not_found">
+                                </div>
+                                <div class="item_content">
+                                    <h4 class="item_title">{{ $cart->rel_to_product->product_name }}</h4>
+                                    <span class="item_price">{{ $cart->rel_to_product->after_discount }} x {{ $cart->quantity }}</span>
+
+                                    <p><span>Color: {{ $cart->rel_to_color->color_name }}</span> | <span>Size: {{ $cart->rel_to_size->size_name }}</span></p>
+                                </div>
+                                <a href="{{ route('cart.remove',$cart->id) }}" class="remove_btn"><i class="fal fa-trash-alt"></i></a>
+                            </li>
+                        @php
+                            $sub_total += $cart->rel_to_product->after_discount * $cart->quantity;
+                        @endphp
+                        @empty
                         <li>
-                            <div class="item_image">
-                                <img src="assets/images/cart/cart_img_1.jpg" alt="image_not_found">
-                            </div>
-                            <div class="item_content">
-                                <h4 class="item_title">Yellow Blouse</h4>
-                                <span class="item_price">$30.00</span>
-                            </div>
-                            <button type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button>
+                            <div class="alert alert-info"><h5>Your cart is empty.</h5></div>
                         </li>
-                        <li>
-                            <div class="item_image">
-                                <img src="assets/images/cart/cart_img_2.jpg" alt="image_not_found">
-                            </div>
-                            <div class="item_content">
-                                <h4 class="item_title">Yellow Blouse</h4>
-                                <span class="item_price">$30.00</span>
-                            </div>
-                            <button type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button>
-                        </li>
-                        <li>
-                            <div class="item_image">
-                                <img src="assets/images/cart/cart_img_3.jpg" alt="image_not_found">
-                            </div>
-                            <div class="item_content">
-                                <h4 class="item_title">Yellow Blouse</h4>
-                                <span class="item_price">$30.00</span>
-                            </div>
-                            <button type="button" class="remove_btn"><i class="fal fa-trash-alt"></i></button>
-                        </li>
+                        @endforelse
+
                     </ul>
 
                     <ul class="total_price ul_li_block mb_30 clearfix">
                         <li>
                             <span>Subtotal:</span>
-                            <span>$90</span>
-                        </li>
-                        <li>
-                            <span>Vat 5%:</span>
-                            <span>$4.5</span>
-                        </li>
-                        <li>
-                            <span>Discount 20%:</span>
-                            <span>- $18.9</span>
-                        </li>
-                        <li>
-                            <span>Total:</span>
-                            <span>$75.6</span>
+                            <span>{{ $sub_total }}</span>
                         </li>
                     </ul>
 
                     <ul class="btns_group ul_li_block clearfix">
-                        <li><a class="btn btn_primary" href="cart.html">View Cart</a></li>
+                        <li><a class="btn btn_primary" href="{{ route('cart') }}">View Cart</a></li>
                         <li><a class="btn btn_secondary" href="checkout.html">Checkout</a></li>
                     </ul>
                 </div>
@@ -419,6 +413,7 @@
     <!-- google map  -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk2HrmqE4sWSei0XdKGbOMOHN3Mm2Bf-M&ver=2.1.6"></script>
     <script src="{{ asset('/frontend/js/gmaps.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- custom - main-js -->
     <script src="{{ asset('/frontend/js/main.js') }}"></script>

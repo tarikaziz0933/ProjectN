@@ -1,9 +1,15 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CustomerCOntroller;
+use App\Http\Controllers\CustomerLoginController;
+use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubcategoryController;
@@ -60,3 +66,23 @@ Route::post('/add/size', [InventoryController::class, 'add_size'])->name('add.si
 Route::post('/add/inventory', [InventoryController::class, 'add_inventory'])->name('add.inventory');
 
 Route::post('/getSize', [FrontendController::class, 'getSize']);
+
+//Customer
+Route::get('/customer/register/login', [CustomerRegisterController::class, 'register_login'])->name('customer.register.login');
+Route::post('/customer/register/store', [CustomerRegisterController::class, 'register_store'])->name('customer.register.store');
+Route::post('/customer/login', [CustomerLoginController::class, 'customer_login'])->name('customer.login');
+Route::get('/customer/logout', [CustomerCOntroller::class, 'customer_logout'])->name('customer.logout');
+
+//Cart
+Route::post('/cart/store', [CartController::class, 'cart_store'])->name('cart.store');
+Route::get('/cart/remove/{cart_id}', [CartController::class, 'cart_remove'])->name('cart.remove');
+Route::get('/cart', [CartController::class, 'cart'])->name('cart');
+Route::post('/cart/update', [CartController::class, 'cart_update'])->name('cart.update');
+
+//Coupon
+Route::get('/coupon', [CouponController::class, 'add_coupon'])->name('add.coupon');
+Route::post('/coupon/store', [CouponController::class, 'coupon_store'])->name('coupon.store');
+Route::get('/coupon/status/{coupon_id}', [CouponController::class, 'coupon_status'])->name('coupon.status');
+
+//checkout
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');

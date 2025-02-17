@@ -61,18 +61,19 @@
                                 </div>
 
                                 <div class="item_price">
-                                    <span>BDT {{ $product_details->first()->after_discount }}</span>
+                                    <span>BDT <span id="price">{{ $product_details->first()->after_discount }}</span></span>
                                     <del>BDT {{ $product_details->first()->product_price }}</del>
                                 </div>
                                 <hr>
 
                                 <div class="item_attribute">
-                                    <form action="#">
+                                    <form action="{{ route('cart.store') }}" method="POST">
+                                        @csrf
                                         <div class="row">
                                             <div class="col col-md-6">
                                                 <div class="select_option clearfix">
                                                     <h4 class="input_title">Color *</h4>
-                                                    <select class="form-control" id="color_id">
+                                                    <select class="form-control" id="color_id" name="color_id">
                                                         <option data-display="- Please select -">Choose A Option</option>
                                                         @foreach ($available_color as $colors)
                                                             <option value="{{ $colors->color_id }}">{{ $colors->rel_to_color->color_name }}</option>
@@ -83,9 +84,8 @@
                                             <div class="col col-md-6">
                                                 <div class="select_option clearfix">
                                                     <h4 class="input_title">Size *</h4>
-                                                    <select class="form-control" id="size_id">
+                                                    <select class="form-control" id="size_id" name="size_id">
                                                         <option>Choose A Option</option>
-
                                                     </select>
                                                 </div>
                                             </div>
@@ -97,16 +97,25 @@
                                             <button type="button" class="input_number_decrement">
                                                 <i class="fal fa-minus"></i>
                                             </button>
-                                            <input class="input_number" type="text" value="1">
+                                            <input class="input_number" id="quantity" name="quantity" type="text" value="1">
                                             <button type="button" class="input_number_increment">
                                                 <i class="fal fa-plus"></i>
                                             </button>
                                         </div>
-                                        <div class="total_price">Total: $620,99</div>
+                                        <div class="total_price">Total: <span id="total">{{ $product_details->first()->after_discount }}</span></div>
                                     </div>
+                                    <input name="product_id" type="hidden" value="{{ $product_details->first()->id }}">
+
+                                    @if(session('stock'))
+                                        <div class="alert alert-warning">{{ session('stock') }}</div>
+                                    @endif
 
                                     <ul class="default_btns_group ul_li">
-                                        <li><a class="btn btn_primary addtocart_btn" href="#!">Add To Cart</a></li>
+                                        {{-- @auth('customerlogin') --}}
+                                            <li><button type="submit" class="btn btn_primary addtocart_btn">Add To Cart</button></li>
+                                        {{-- @else
+                                            <li><a href="{{ route('customer.register.login') }}" class="btn btn_primary addtocart_btn">Add To Cart</a></li>
+                                        @endauth --}}
                                     </ul>
                                 </div>
                             </form>
@@ -345,8 +354,47 @@
             $('#size_id').html(data);
         }
     });
+    });
 
+    $('.input_number_decrement').click(function(){
+        let quantity = $('#quantity').val();
+        if(quantity >= 1){
+            let price = $('#price').html();
+            let total = price * quantity;
+            $('#total').html(total);
+        }
+        else{
+            $('#quantity').val(1);
+        }
 
     });
+
+    $('.input_number_increment').click(function(){
+        let quantity = $('#quantity').val();
+        let price = $('#price').html();
+        let total = price * quantity;
+        $('#total').html(total);
+    });
+
 </script>
+
+@if(session('cart_added'))
+<script>
+    const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+    });
+    Toast.fire({
+    icon: "success",
+    title: '{{ session('cart_added') }}'
+    });
+</script>
+@endif
 @endsection

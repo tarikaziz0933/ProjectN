@@ -29,12 +29,14 @@ class CategoryController extends Controller
     {
         if ($request->category_image) {
             $request->validate([
-                'category_name' => 'required|unique:categories',
-                'category_image' => 'mimes:jpg,png,jpeg,PNG',
-                'category_image' => 'file|max:512',
+                'category_name' => 'required|unique:categories,category_name',
+                'category_image' => 'required|mimes:png,jpeg|file|max:512',
             ], [
-                'category_name.required' => 'Please enter the name',
-                'category_name.unique' => 'Category already exist',
+                'category_name.required' => 'Please enter the category name.',
+                'category_name.unique' => 'Category already exists.',
+                'category_image.required' => 'Please upload a category image.',
+                'category_image.mimes' => 'The category image must be a PNG, JPG, or JPEG file.',
+                'category_image.max' => 'The category image must not be larger than 512 KB.',
             ]);
             $category_id = Category::insertGetId([
                 'category_name' => $request->category_name,
