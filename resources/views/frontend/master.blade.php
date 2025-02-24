@@ -37,6 +37,7 @@
 
     <!-- custom - css include -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -189,7 +190,7 @@
                                         </a>
 
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <li><a class="dropdown-item" href="#">My Account</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('account') }}">My Account</a></li>
                                             <li><a class="dropdown-item" href="{{ route('customer.logout') }}">Logout</a></li>
                                         </ul>
                                     </div>
@@ -414,6 +415,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk2HrmqE4sWSei0XdKGbOMOHN3Mm2Bf-M&ver=2.1.6"></script>
     <script src="{{ asset('/frontend/js/gmaps.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- custom - main-js -->
     <script src="{{ asset('/frontend/js/main.js') }}"></script>

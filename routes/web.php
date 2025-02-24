@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -86,3 +87,9 @@ Route::get('/coupon/status/{coupon_id}', [CouponController::class, 'coupon_statu
 
 //checkout
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('/getCity', [CheckoutController::class, 'getCity']);
+Route::post('/order/store', [CheckoutController::class, 'order_store'])->name('order.store');
+Route::get('/order/success', [CheckoutController::class, 'order_success'])->name('order.success');
+
+//invoice downloasd
+Route::get('/account', [AccountController::class, 'account'])->name('account');
